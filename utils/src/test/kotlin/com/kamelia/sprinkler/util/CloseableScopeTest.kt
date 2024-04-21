@@ -20,10 +20,12 @@ class CloseableScopeTest {
     class ThrowingCloseableMock : CloseableMock() {
         override fun close() {
             super.close()
-            throw RuntimeException()
+            throw Exception()
         }
 
         val index = i++
+
+        class Exception: RuntimeException()
 
         companion object {
             var i = 0
@@ -84,6 +86,7 @@ class CloseableScopeTest {
 
     @Test
     fun `should close scoped closeables even if an exception is thrown in a closeable`() {
+        ThrowingCloseableMock.i = 0
         lateinit var closeable1: ThrowingCloseableMock
         lateinit var closeable2: ThrowingCloseableMock
 
@@ -101,10 +104,41 @@ class CloseableScopeTest {
         assertTrue(res.isFailure)
         val exception = res.exceptionOrNull()
         assertNotNull(exception)
-        assertTrue(exception is RuntimeException)
+        assertTrue(exception is ThrowingCloseableMock.Exception)
         assertEquals(1, exception!!.suppressed.size)
         assertEquals(0, exception.suppressed[0].suppressed.size)
-        assertTrue(exception.suppressed[0] is RuntimeException)
+        assertTrue(exception.suppressed[0] is ThrowingCloseableMock.Exception)
+    }
+
+    @Test
+    fun `should close scoped closeables even if an exception is thrown in a closeable and in the scope and the former should be suppressed under the latter`() {
+        ThrowingCloseableMock.i = 0
+        lateinit var closeable1: ThrowingCloseableMock
+        lateinit var closeable2: ThrowingCloseableMock
+
+        class ScopeException : RuntimeException()
+
+        val res = runCatching {
+            closeableScope {
+                closeable1 = using(ThrowingCloseableMock())
+                closeable2 = using(ThrowingCloseableMock())
+                throw ScopeException()
+            }
+        }
+
+        assertTrue(closeable1.isClosed)
+        assertTrue(closeable2.isClosed)
+        assertEquals(0, closeable1.index)
+        assertEquals(1, closeable2.index)
+        assertTrue(res.isFailure)
+        val exception = res.exceptionOrNull()
+        assertNotNull(exception)
+        assertTrue(exception!! is ScopeException, "Expected ScopeException but got ${exception::class}")
+        assertEquals(2, exception.suppressed.size)
+        assertEquals(0, exception.suppressed[0].suppressed.size)
+        assertEquals(0, exception.suppressed[1].suppressed.size)
+        assertTrue(exception.suppressed[0] is ThrowingCloseableMock.Exception)
+        assertTrue(exception.suppressed[1] is ThrowingCloseableMock.Exception)
     }
 
     @Test
