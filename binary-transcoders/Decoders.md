@@ -574,8 +574,8 @@ provided by the `DecodingScope`:
 The `objectScoped(() -> T): T` method executes the given function only once per scope, that is to say, in the case of
 recursive encoding, any subsequent call to this method will return the cached result for the same object.
 
-It is mainly used to create a derived decoder using the `self` decoder, as it is not possible to declare it before the 
-scope, and because it must be cached in the case where decoding cannot be done in a single pass (to keep track of the 
+It is mainly used to create a derived decoder using the `self` decoder, as it is not possible to declare it before the
+scope, and because it must be cached in the case where decoding cannot be done in a single pass (to keep track of the
 partial data between calls).
 
 Here is an example of how to use it when creating a custom decoder using `self`:
@@ -650,7 +650,7 @@ val decoder: Decoder<Person> = composedDecoder<Person>(
 ) { // this: DecodingScope<Person>
     val name: String = string()
     val age: Int = int() // interpreted in little endian
-    
+
     Person(name, age)
 }
 ```
@@ -754,21 +754,26 @@ decoder created through composition (benchmarks done using jmh) (higher is bette
 |:------------------------:|:-----------:|:----------:|
 |  ByteArray single step   |  8 533.491  | 48 436.599 |
 | ByteArray several steps  |   476.447   | 48 895.678 |
-|     File single step     |   54.503    | 4 118.578  |
-|    File several steps    |   50.883    | 3 588.680  |
 |  ByteBuffer single step  |  7 410.855  | 50 410.224 |
 | ByteBuffer several steps |   731.728   | 50 385.284 |
 
 
-> **Note**: in the table above, the "single step" cases correspond to the decoding processes that run in a single call 
-> to the `decode` method, while the "several steps" cases correspond to the decoding processes that run in the worst 
-> case scenario, where the input size is one byte and the decoder is called for each byte. 
+|    cases \ ops per ms    | Composition V1 | Composition V2 |  Handmade  |
+|:------------------------:|----------------|:--------------:|:----------:|
+|  ByteArray single step   | 8 533.491      |   17 429.932   | 27 547.215 |
+| ByteArray several steps  | 476.447        |   4 009.594    | 6 778.241  |
+|  ByteBuffer single step  | 7 410.855      |   15 940.209   | 27 547.215 |
+| ByteBuffer several steps | 731.728        |   2 957.169    | 4 791.257  |
+
+> **Note**: in the table above, the "single step" cases correspond to the decoding processes that run in a single call
+> to the `decode` method, while the "several steps" cases correspond to the decoding processes that run in the worst
+> case scenario, where the input size is one byte and the decoder is called for each byte.
 
 > Specs of the machine used for the benchmark:
 > - Windows 11
 > - CPU: Intel Core i9-10900KF @ 3.70 GHz, 10 cores, 20 logical processors
 > - 32 GB of RAM DDR4 @ 3200 MHz
-> 
+>
 > Benchmark config:
 > - JMH version: 1.33
 > - VM version: JDK 17
@@ -831,8 +836,8 @@ class PersonDecoder : Decoder<Person> {
 ```
 
 As you can see, even for a simple object, the implementation of the decoder is quite big. This is why the composition
-emphasizes on readability over performance. The complexity of the implementation also increases exponentially when it 
-comes to recursive decoding, which is why the composition is a good tool to describe how recursive decoding should be 
+emphasizes on readability over performance. The complexity of the implementation also increases exponentially when it
+comes to recursive decoding, which is why the composition is a good tool to describe how recursive decoding should be
 done.
 
 ## Complete Example

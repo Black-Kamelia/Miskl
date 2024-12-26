@@ -1,7 +1,5 @@
 package com.kamelia.sprinkler.util
 
-import com.zwendo.restrikt.annotation.HideFromJava
-
 /**
  * Represents a box containing a value. This interface aims at providing a way to declare a property with a value that
  * is not available at the time of declaration. Any read access to the [value] property will throw an exception if the
@@ -52,7 +50,7 @@ interface Box<out T> {
     /**
      * Delegate operator for the [value] property.
      */
-    @HideFromJava
+//    @HideFromJava
     operator fun getValue(thisRef: Any?, property: Any?): T = value
 
     /**
@@ -70,7 +68,7 @@ interface Box<out T> {
         /**
          * Delegate operator for the [fill] function.
          */
-        @HideFromJava
+//        @HideFromJava
         operator fun setValue(thisRef: Any?, property: Any?, value: T) {
             fill(value)
         }

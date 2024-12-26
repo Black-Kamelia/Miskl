@@ -11,7 +11,7 @@ import com.kamelia.sprinkler.transcoder.binary.decoder.core.Decoder
 import com.kamelia.sprinkler.transcoder.binary.decoder.core.DecoderInput
 import com.kamelia.sprinkler.transcoder.binary.decoder.toCollection
 import com.kamelia.sprinkler.util.unsafeCast
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 import java.nio.ByteOrder
 import java.util.stream.Collector
 

@@ -136,11 +136,7 @@ interface Decoder<out T> {
         /**
          * State returned when the decoding process has not been completed yet. More bytes are needed.
          */
-        object Processing : State<Nothing> {
-
-            override fun toString(): String = "Processing"
-
-        }
+        data object Processing : State<Nothing>
 
         /**
          * State returned when the decoding process has failed. The exception that caused the failure can be accessed

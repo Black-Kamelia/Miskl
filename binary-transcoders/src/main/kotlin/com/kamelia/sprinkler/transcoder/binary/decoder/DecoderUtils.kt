@@ -2,10 +2,14 @@
 
 package com.kamelia.sprinkler.transcoder.binary.decoder
 
-import com.kamelia.sprinkler.transcoder.binary.decoder.core.*
+import com.kamelia.sprinkler.transcoder.binary.decoder.core.ConstantArityReductionDecoder
+import com.kamelia.sprinkler.transcoder.binary.decoder.core.Decoder
+import com.kamelia.sprinkler.transcoder.binary.decoder.core.DecoderInput
+import com.kamelia.sprinkler.transcoder.binary.decoder.core.MarkerEndedReductionDecoder
+import com.kamelia.sprinkler.transcoder.binary.decoder.core.PrefixedArityReductionDecoder
 import com.kamelia.sprinkler.util.ExtendedCollectors
 import com.kamelia.sprinkler.util.unsafeCast
-import com.zwendo.restrikt.annotation.HideFromJava
+import com.zwendo.restrikt2.annotation.HideFromJava
 import java.util.stream.Collector
 import java.util.stream.Collectors
 

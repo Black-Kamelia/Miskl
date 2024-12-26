@@ -280,14 +280,14 @@ class InterpolationsTest {
     @Test
     fun `interpolate(Iterator) uses the default delimiter`() {
         val str = "Hello {{}}, you are {{}} years old"
-        assertEquals("Hello John, you are 25 years old", str.interpolate(listOf("John", 25).iterator()))
+        assertEquals("Hello John, you are 25 years old", str.interpolate(listOf("John", 25) as Iterable<Any>))
     }
 
     @Test
     fun `interpolate(Iterator) throws an exception if there is not any value left`() {
         val str = "Hello {{0}}, you are {{1}} years old"
         assertThrows<IllegalArgumentException> {
-            str.interpolate(listOf<String>().iterator())
+            str.interpolate(listOf<String>() as Iterable<Any>)
         }
     }
 

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.*
 
 plugins {
@@ -9,11 +10,11 @@ plugins {
     signing
     id("org.jetbrains.kotlinx.kover") version koverVersion
     kotlin("jvm") version kotlinVersion
-    id("com.zwendo.restrikt") version restriktVersion
+    id("com.zwendo.restrikt2") version restriktVersion
 }
 
 val jvmVersion: String by project
-val rootProjectName = rootProject.name.toLowerCase()
+val rootProjectName = rootProject.name.lowercase()
 
 group = findProp<String>("projectGroup")
 
@@ -22,15 +23,15 @@ val props = Properties().apply { load(file("gradle.properties").reader()) }
 fun String.base64Decode() = String(Base64.getDecoder().decode(this))
 
 val restriktVersion: String by System.getProperties()
-subprojects {
+allprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
-    apply(plugin = "com.zwendo.restrikt")
+    apply(plugin = "com.zwendo.restrikt2")
     apply(plugin = "org.jetbrains.kotlinx.kover")
 
-    val projectName = project.name.toLowerCase()
+    val projectName = project.name.lowercase()
     val projectVersion = findProp("$projectName.version") ?: "0.1.0"
 
     repositories {
@@ -39,33 +40,38 @@ subprojects {
 
     dependencies {
         val junitVersion: String by project
+        val restriktAnnotationsVersion: String by project
 
-        implementation("com.zwendo:restrikt-annotation:$restriktVersion")
+        implementation("com.zwendo", "restrikt2-annotations", restriktAnnotationsVersion)
         testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
         testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
         testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
     }
 
     java {
-        withJavadocJar()
+//        withJavadocJar()
         withSourcesJar()
     }
 
     signing {
-        val signingKey = findProp<String?>("signingKey")
-        val signingPassword = findProp<String?>("signingPassword")
-        if (signingKey != null && signingPassword != null) {
-            logger.info("Using in memory keys for signing")
-            useInMemoryPgpKeys(signingKey.base64Decode(), signingPassword)
-        } else {
-            logger.info("Using local GPG keys for signing")
+//        val signingKey = findProp<String?>("signingKey")
+//        val signingPassword = findProp<String?>("signingPassword")
+//        if (signingKey != null && signingPassword != null) {
+//            logger.info("Using in memory keys for signing")
+//            useInMemoryPgpKeys(signingKey.base64Decode(), signingPassword)
+//        } else {
+//            logger.info("Using local GPG keys for signing")
+//        }
+//        sign(publishing.publications)
+        isRequired = false
+        tasks.withType<Sign>().configureEach {
+            onlyIf { false } // Ensure no signing tasks are executed
         }
-        sign(publishing.publications)
     }
 
     kover {
-        excludeSourceSets {
-            names("jmh")
+        currentProject {
+            sources.excludedSourceSets = setOf("jmh")
         }
     }
 
@@ -90,11 +96,10 @@ subprojects {
         }
 
         setupKotlinCompilation {
-            kotlinOptions {
-                jvmTarget = jvmVersion
+            compilerOptions {
+                jvmTarget.set(JvmTarget.fromTarget(jvmVersion))
                 freeCompilerArgs = listOf(
                     "-Xjvm-default=all",
-                    "-Xlambdas=indy",
                     "-Xsam-conversions=indy",
                 )
             }
@@ -130,7 +135,7 @@ subprojects {
                     licenses {
                         license {
                             name.set("The Apache License, Version 2.0")
-                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                         }
                     }
 

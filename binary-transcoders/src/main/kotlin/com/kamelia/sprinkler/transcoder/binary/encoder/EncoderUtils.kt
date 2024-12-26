@@ -3,7 +3,7 @@
 package com.kamelia.sprinkler.transcoder.binary.encoder
 
 import com.kamelia.sprinkler.transcoder.binary.encoder.core.Encoder
-import com.zwendo.restrikt.annotation.HideFromJava
+import com.zwendo.restrikt2.annotation.HideFromJava
 
 /**
  * Creates an encoder that encodes an object [R] using a given encoder of type [T]. The created encoder will map the

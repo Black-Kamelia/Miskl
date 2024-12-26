@@ -32,7 +32,9 @@ object ExtendedCollectors {
      */
     @JvmStatic
     @JvmOverloads
-    fun <K, V> toLinkedHashMap(mergeFunction: (V, V) -> V = { _, b -> b }): Collector<Pair<K, V>, *, Map<K, V>> =
+    fun <K, V> toLinkedHashMap(
+        mergeFunction: (V, V) -> V = { _, b -> b }
+    ): Collector<Pair<K, V>, *, LinkedHashMap<K, V>> =
         Collectors.toMap(Pair<K, V>::first, Pair<K, V>::second, mergeFunction, ::LinkedHashMap)
 
     /**
@@ -59,8 +61,8 @@ object ExtendedCollectors {
     @JvmStatic
     @JvmOverloads
     fun <K, V> toLinkedHashMapUsingEntries(
-        mergeFunction: (V, V) -> V = { _, b -> b }
-    ): Collector<Map.Entry<K, V>, *, Map<K, V>> =
+        mergeFunction: (V, V) -> V = { _, b -> b },
+    ): Collector<Map.Entry<K, V>, *, LinkedHashMap<K, V>> =
         Collectors.toMap(Map.Entry<K, V>::key, Map.Entry<K, V>::value, mergeFunction, ::LinkedHashMap)
 
     /**

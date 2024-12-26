@@ -1,6 +1,6 @@
 package com.kamelia.sprinkler.collection.readonly
 
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 
 @PackagePrivate
 internal class ReadOnlyIterableImpl<T>(private val inner: Iterable<T>) : ReadOnlyIterable<T>, Iterable<T> {

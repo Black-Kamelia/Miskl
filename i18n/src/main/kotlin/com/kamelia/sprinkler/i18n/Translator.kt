@@ -1,6 +1,6 @@
 package com.kamelia.sprinkler.i18n
 
-import java.util.Locale
+import java.util.*
 
 /**
  * Interface representing an object that can be used to translate strings. Through the [t] method, a key can be
@@ -107,7 +107,7 @@ interface Translator {
      * @param locale the locale to use for the translation
      * @param fallbacks the fallback keys to use if the translation is not found for the given [locale]
      * @return the translation using the provided information, or null if the translation is not found
-     * @throws IllegalArgumentException if the key is not [valid][TranslationKey] or if the [options] are not valid
+     * @throws IllegalArgumentException if the key is not [valid][TranslationKey]
      */
     fun tn(key: TranslationKey, locale: Locale, vararg fallbacks: String): String? =
         tn(key, emptyMap(), locale, defaultLocale, *fallbacks)
@@ -143,6 +143,7 @@ interface Translator {
      * @param key the key to translate
      * @param fallbacks the fallback keys to use if the translation is not found for the given locale
      * @return the translation using the provided information, or null if the translation is not found
+     * @throws IllegalArgumentException if the key is not [valid][TranslationKey]
      */
     fun tn(key: TranslationKey, vararg fallbacks: String): String? =
         tn(key, emptyMap(), currentLocale, defaultLocale, *fallbacks)
@@ -218,8 +219,8 @@ interface Translator {
      * @param locale the locale to use for the translation
      * @param fallbacks the fallback keys to use if the translation is not found for the given [locale]
      * @return the translation using the provided information or a value depending on the implementation if not found
-     * @throws IllegalArgumentException if the key is not [valid][TranslationKey], if the [options] are not valid, or
-     * if the implementation throws an exception when a translation is not found
+     * @throws IllegalArgumentException if the key is not [valid][TranslationKey], or if the implementation throws an
+     * exception when a translation is not found
      */
     fun t(key: TranslationKey, locale: Locale, vararg fallbacks: String): String =
         t(key, emptyMap(), locale, defaultLocale, *fallbacks)
@@ -265,8 +266,8 @@ interface Translator {
         t(key, emptyMap(), currentLocale, defaultLocale, *fallbacks)
 
     /**
-     * Returns a new [Translator] with the given [key] as root key prefix. The [key] will be prepended to all keys used
-     * to translate values.
+     * Returns a [Translator] with the given [key] as root key prefix (it can return itself after a state mutation,
+     * depending on the implementation). The [key] will be prepended to all keys used to translate values.
      *
      * **NOTE**: This method does not check if the key actually exists in the translations.
      *
@@ -277,20 +278,19 @@ interface Translator {
     fun section(key: TranslationKey): Translator
 
     /**
-     * Returns a new [Translator] with the given [locale] as current locale. This operation is lightweight (it simply
-     * uses a translation map which is shared between all instances), meaning that it can be used frequently without any
-     * performance impact.
+     * Returns a [Translator] with the given [locale] as current locale (it can return itself after a state mutation,
+     * depending on the implementation).
      *
      * **NOTE**: This method does not check if the [locale] is actually supported by this [Translator].
      *
      * @param locale the new current locale
-     * @return a new [Translator] with the given [locale] as current locale
+     * @return a [Translator] with the given [locale] as current locale
      */
     fun withNewCurrentLocale(locale: Locale): Translator
 
     /**
-     * Returns the root [Translator] version of this [Translator] (the same translator with its prefix set to null). If
-     * this [Translator] is already a root [Translator], it will return itself.
+     * Returns the root [Translator] version of this [Translator] (it can return itself after a state mutation,
+     * depending on the implementation). The root translator is a translator with its prefix set to null.
      *
      * @return the root [Translator] version of this [Translator]
      */
@@ -305,19 +305,5 @@ interface Translator {
      * @return a map containing all translations for all locales
      */
     fun toMap(): Map<Locale, Map<TranslationKey, String>>
-
-    companion object {
-
-        /**
-         * Returns a new [TranslatorBuilder] with the given [defaultLocale]. The [defaultLocale] will be used as the
-         * default locale for all [Translator]s built by the returned [TranslatorBuilder].
-         *
-         * @param defaultLocale the default locale
-         * @return a new [TranslatorBuilder] with the given [defaultLocale]
-         */
-        @JvmStatic
-        fun builder(defaultLocale: Locale): TranslatorBuilder = TranslatorBuilder(defaultLocale)
-
-    }
 
 }

@@ -1,7 +1,7 @@
 package com.kamelia.sprinkler.transcoder.binary.decoder.composer
 
 import com.kamelia.sprinkler.transcoder.binary.decoder.core.Decoder
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 
 @PackagePrivate
 internal object ProcessingMarker : Throwable(null, null, true, false) {

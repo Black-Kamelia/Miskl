@@ -1,8 +1,8 @@
-@file:HideFromJava("This is a Kotlin only API")
+@file:HideFromJava
 
 package com.kamelia.sprinkler.util
 
-import com.zwendo.restrikt.annotation.HideFromJava
+import com.zwendo.restrikt2.annotation.HideFromJava
 
 /**
  * A scope for managing the lifecycle of [AutoCloseable]s.

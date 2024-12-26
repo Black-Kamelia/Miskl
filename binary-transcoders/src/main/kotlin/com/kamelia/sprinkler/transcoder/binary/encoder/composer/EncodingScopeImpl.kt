@@ -10,7 +10,7 @@ import com.kamelia.sprinkler.transcoder.binary.encoder.ShortEncoder
 import com.kamelia.sprinkler.transcoder.binary.encoder.core.Encoder
 import com.kamelia.sprinkler.transcoder.binary.encoder.core.EncoderOutput
 import com.kamelia.sprinkler.util.unsafeCast
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 import java.nio.ByteOrder
 
 

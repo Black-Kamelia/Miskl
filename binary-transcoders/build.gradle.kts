@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     val jmhPluginVersion: String by System.getProperties()
     id("me.champeau.jmh") version jmhPluginVersion
@@ -16,19 +18,19 @@ tasks {
     }
 
     compileJmhKotlin {
-        kotlinOptions {
-            jvmTarget = jvmVersion
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(jvmVersion))
         }
     }
 
     jmh {
-        warmup.set("60s")
-        timeOnIteration.set("60s")
+        warmup.set("10s")
+        timeOnIteration.set("10s")
         timeUnit.set("ms")
 
-        warmupIterations.set(5)
-        iterations.set(5)
-        fork.set(5)
+        warmupIterations.set(2)
+        iterations.set(2)
+        fork.set(1)
     }
 
 }

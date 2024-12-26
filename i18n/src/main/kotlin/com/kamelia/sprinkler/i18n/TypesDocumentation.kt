@@ -8,7 +8,7 @@ package com.kamelia.sprinkler.i18n
  * - It cannot be empty
  * - It must start and end with an alphanumeric character
  * - It can contain alphanumeric characters, dashes and underscores
- * - It cannot contain two consecutive dashes or underscores (or a dash followed by an underscore or vice-versa).
+ * - It cannot contain two consecutive dashes or underscores (or a dash followed by an underscore or vice versa).
  *
  * Here are some examples of valid [Identifier]s:
  * - `my-key`
@@ -76,7 +76,7 @@ typealias TranslationInterpolationVariable = String
  * (the type of the exception will depend on the function).
  *
  * **NOTE**: the regex of [TranslationKey] is `[a-zA-Z\d]+(?:-|_[a-zA-Z\d]+)*(?:\.[a-zA-Z\d]+(?:-|_[a-zA-Z\d]+)*)*`. as
- * defined in [Identifier].
+ * defined in [Identifier]. It can be obtained through the [keyRegex()][TranslatorBuilder.keyRegex] method.
  *
  * @see Identifier
  * @see Translator

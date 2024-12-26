@@ -19,28 +19,31 @@ data class BasicPerson(
 class BasicPersonDecoder : Decoder<BasicPerson> {
 
     private var name: String? = null
-    private var age: Int? = null
+    private var age: Int = 0
+    private var index: Int = 0
 
     private val stringDecoder = UTF8StringDecoder()
     private val intDecoder = IntDecoder()
 
     override fun decode(input: DecoderInput): Decoder.State<BasicPerson> {
-        if (name == null) {
+        if (index == 0) {
             val state = stringDecoder.decode(input)
             if (state.isNotDone()) return state.mapEmptyState()
             name = state.get()
+            index = 1
         }
-        if (age == null) {
+        if (index == 1) {
             val state = intDecoder.decode(input)
             if (state.isNotDone()) return state.mapEmptyState()
             age = state.get()
         }
-        return Decoder.State.Done(BasicPerson(name!!, age!!))
+        index = 0
+        return Decoder.State.Done(BasicPerson(name!!, age))
     }
 
     override fun reset() {
         name = null
-        age = null
+        index = 0
         stringDecoder.reset()
         intDecoder.reset()
     }

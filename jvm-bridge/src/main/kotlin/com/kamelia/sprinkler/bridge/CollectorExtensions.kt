@@ -3,7 +3,7 @@
 
 package com.kamelia.sprinkler.bridge
 
-import com.zwendo.restrikt.annotation.HideFromJava
+import com.zwendo.restrikt2.annotation.HideFromJava
 import java.util.stream.Collector
 
 /**

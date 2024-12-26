@@ -1,6 +1,6 @@
 package com.kamelia.sprinkler.transcoder.binary.decoder.composer
 
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 
 @PackagePrivate
 internal class ElementsAccumulator {

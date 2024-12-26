@@ -6,7 +6,7 @@ import com.kamelia.sprinkler.transcoder.binary.decoder.IntDecoder
 import com.kamelia.sprinkler.transcoder.binary.decoder.UTF8StringDecoder
 import com.kamelia.sprinkler.transcoder.binary.decoder.core.Decoder
 import com.kamelia.sprinkler.transcoder.binary.decoder.core.DecoderInput
-import com.zwendo.restrikt.annotation.PackagePrivate
+import com.zwendo.restrikt2.annotation.PackagePrivate
 import java.nio.ByteOrder
 
 /**

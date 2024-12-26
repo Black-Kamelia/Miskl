@@ -2,7 +2,7 @@
 
 package com.kamelia.sprinkler.util
 
-import com.zwendo.restrikt.annotation.HideFromJava
+import com.zwendo.restrikt2.annotation.HideFromJava
 
 /**
  * Throws an [IllegalArgumentException] with the given [message].
